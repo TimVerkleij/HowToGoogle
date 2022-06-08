@@ -1,6 +1,8 @@
 const urlParams = new URLSearchParams(window.location.search)
 const query = urlParams.get('q')
 let input = document.getElementById('query')
+let generatedLink = document.getElementById('generatedLink')
+let generatedLinkDiv = document.getElementById('generatedLinkDiv')
 let cursor = document.getElementById('cursor')
 let button = document.getElementById('button')
 startTyping(query)
@@ -55,4 +57,28 @@ function getOffset(element) {
         top: rect.top + scrollTop,
         left: rect.left + scrollLeft
     }
+}
+
+function generate() {
+    const link = `http://blastbucket.nl/?q=${input.value}`
+    generatedLink.value = link
+    generatedLinkDiv.style.display = "block"
+}
+
+function copy() {
+    generatedLink.select()
+    generatedLink.setSelectionRange(0, 99999)
+    document.execCommand("copy")
+    showNotification('Link Copied')
+}
+
+async function showNotification(message) {
+    const notification = document.getElementById('notification')
+    const notificationText = document.getElementById('notificationText')
+    notificationText.innerHTML = message
+    notification.style.opacity = "100%"
+    notification.style.transform = "translate(-50%, 20px)"
+    await sleep(2000)
+    notification.style.opacity = "0%"
+    notification.style.transform = "translate(-50%, -20px)"
 }
